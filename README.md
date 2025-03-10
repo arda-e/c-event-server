@@ -1,4 +1,3 @@
-
 # C Event-Driven Web Server
 
 A lightweight, high-performance HTTP server written in C, utilizing the `kqueue` event notification interface for efficient, non-blocking I/O operations.
