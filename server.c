@@ -1,8 +1,7 @@
 #include <stdbool.h>
 #include <sys/event.h>
-
 #include "server.utils.h"
-#include "events.h"
+#include "event_loop/event_loop.h"
 
 
 int main() {
@@ -21,12 +20,13 @@ int main() {
 
     printf("Server listening on port %d...\n", PORT);
 
-    const int kq = create_kqueue_instance();
-    register_kqueue_event(kq, server_fd, EVFILT_READ, EV_ADD | EV_ENABLE);
-    handle_events(server_fd, kq);
+
+    const int loop_fd = event_loop_create();
+    event_loop_register_event(loop_fd, server_fd, EVFILT_READ, EV_ADD | EV_ENABLE);
+    event_loop_run(server_fd, loop_fd);
 
     /* Close the server socket when exiting the program */
-    close(kq);
+    close(loop_fd);
     close(server_fd);
     return 0;
 }
