@@ -1,6 +1,8 @@
 #include <stdbool.h>
-#include "server.utils.h"
+#include <sys/event.h>
 
+#include "server.utils.h"
+#include "events.h"
 
 
 int main() {
@@ -19,18 +21,12 @@ int main() {
 
     printf("Server listening on port %d...\n", PORT);
 
-    while (1) {
-        struct sockaddr_in client_addr;
-        socklen_t addr_len = sizeof(client_addr);
-
-        int const client_socket = accept_client_connection(server_fd, &client_addr, &addr_len);
-
-        if (handle_client_connection(client_socket)) {
-            close_socket(client_socket);
-        }
-    }
+    const int kq = create_kqueue_instance();
+    register_kqueue_event(kq, server_fd, EVFILT_READ, EV_ADD | EV_ENABLE);
+    handle_events(server_fd, kq);
 
     /* Close the server socket when exiting the program */
+    close(kq);
     close(server_fd);
     return 0;
 }

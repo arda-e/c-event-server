@@ -9,9 +9,13 @@
 #include <arpa/inet.h>
 #include <sys/select.h>
 
+
 #define PORT 8080
 #define BUFFER_SIZE 1024
+
 #define MAX_CLIENTS 10
+#define MAX_EVENTS 64
+
 #define PREFIX "Server: "
 
 /* Socket creation and setup functions */

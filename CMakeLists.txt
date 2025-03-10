@@ -10,4 +10,6 @@ add_executable(web_server_c
         http/http_helpers.h
         http/http_helpers.c
         http/http_router.h
-        http/http_router.c)
+        http/http_router.c
+        events.h
+        events.c)
